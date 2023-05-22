@@ -65,7 +65,7 @@ public class PrincipalPatientActivity extends BaseActivity{
         switch (item.getItemId()){
             case R.id.navigation_chat:
             case R.id.menu_chat:
-                binding.navBar.setVisibility(View.VISIBLE);
+                binding.navBar.setVisibility(View.INVISIBLE);
                 getSupportActionBar().hide();
                 fragment = new ChatFragment();
                 fragmentTransaction = true;

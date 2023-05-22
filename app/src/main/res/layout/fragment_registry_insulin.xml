@@ -173,12 +173,13 @@
                             android:textAlignment="gravity"
                             android:textSize="20sp"/>
                         <LinearLayout
+                            android:id="@+id/linearState"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="2dp"
                             android:orientation="horizontal">
                             <ImageView
-                                android:id="@+id/sadImage"
+                                android:id="@+id/depressiveImageIns"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="25dp"
@@ -186,28 +187,28 @@
                                 android:src="@drawable/ic_sad"
                                />
                             <ImageView
-                                android:id="@+id/angryImage"
+                                android:id="@+id/verySadImageIns"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="15dp"
                                 android:src="@drawable/ic_angry"
                           />
                             <ImageView
-                                android:id="@+id/worriedImage"
+                                android:id="@+id/sadImageIns"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="15dp"
                                 android:src="@drawable/ic_worried"
                                />
                             <ImageView
-                                android:id="@+id/happyImage"
+                                android:id="@+id/happyImageIns"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="15dp"
                                 android:src="@drawable/ic_happy_3"
                               />
                             <ImageView
-                                android:id="@+id/happyTImage"
+                                android:id="@+id/happyTImageIns"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="15dp"
@@ -257,7 +258,7 @@
                     android:textAlignment="gravity"
                     android:textSize="20sp"/>
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/name"
+                    android:id="@+id/comment"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="15dp"
@@ -265,7 +266,7 @@
                     app:counterTextAppearance="@style/counterText"
                     app:counterOverflowTextAppearance="@style/counterOverride">
                     <EditText
-                        android:id="@+id/nameEdit"
+                        android:id="@+id/commentEdit"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textSize="18sp"
@@ -280,7 +281,7 @@
         </androidx.cardview.widget.CardView>
     </LinearLayout>
         <Button
-            android:id="@+id/buttonAddG"
+            android:id="@+id/buttonAddInsulin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/layoutComment"
