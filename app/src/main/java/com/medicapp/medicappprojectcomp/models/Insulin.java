@@ -15,4 +15,6 @@ public class Insulin {
     private String hour;
     private String state;
     private String comment;
+
+
 }

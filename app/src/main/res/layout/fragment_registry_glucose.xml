@@ -24,18 +24,21 @@
             android:textColor="@color/blue_500"
             android:textSize="22dp" />
 
-        <com.github.mikephil.charting.charts.BarChart
-            android:id="@+id/idBarChart"
+        <com.github.mikephil.charting.charts.LineChart
+            android:id="@+id/lineChart"
             android:layout_width="match_parent"
             android:layout_below="@+id/textTitle"
-            android:layout_height="200dp" />
+            android:layout_height="200dp"
+            android:background="@color/white"
+            android:elevation="10dp"
+            />
 
         <LinearLayout
             android:id="@+id/layoutData"
             android:layout_marginTop="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/idBarChart"
+            android:layout_below="@+id/lineChart"
             android:orientation="horizontal" >
             <View
                 android:id="@+id/detailRectangle"
