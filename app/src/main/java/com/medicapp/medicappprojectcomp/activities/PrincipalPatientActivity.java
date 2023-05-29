@@ -17,6 +17,7 @@ import com.medicapp.medicappprojectcomp.R;
 import com.medicapp.medicappprojectcomp.databinding.ActivityPrincipalPatientBinding;
 import com.medicapp.medicappprojectcomp.fragments.ChatFragment;
 import com.medicapp.medicappprojectcomp.fragments.FoodMainFragment;
+import com.medicapp.medicappprojectcomp.fragments.MainDeportFragment;
 import com.medicapp.medicappprojectcomp.fragments.MapFragment;
 import com.medicapp.medicappprojectcomp.fragments.MedicalDiagnosticFragment;
 import com.medicapp.medicappprojectcomp.fragments.NewsFragment;
@@ -93,6 +94,12 @@ public class PrincipalPatientActivity extends BaseActivity{
                 getSupportActionBar().show();
                 binding.navBar.setVisibility(View.INVISIBLE);
                 fragment = new FoodMainFragment();
+                fragmentTransaction = true;
+                break;
+            case R.id.menu_sport:
+                getSupportActionBar().show();
+                binding.navBar.setVisibility(View.INVISIBLE);
+                fragment = new MainDeportFragment();
                 fragmentTransaction = true;
                 break;
             case R.id.menu_news:

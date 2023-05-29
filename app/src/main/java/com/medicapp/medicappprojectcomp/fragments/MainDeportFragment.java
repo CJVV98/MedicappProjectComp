@@ -1,13 +1,29 @@
 package com.medicapp.medicappprojectcomp.fragments;
 
+import static java.sql.DriverManager.println;
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.medicapp.medicappprojectcomp.R;
+import com.medicapp.medicappprojectcomp.adapters.Sport;
+import com.medicapp.medicappprojectcomp.adapters.SportAdapter;
+import com.medicapp.medicappprojectcomp.databinding.FragmentMedicalDiagnosticBinding;
+import com.medicapp.medicappprojectcomp.utils.ReadFiles;
+import com.medicapp.medicappprojectcomp.databinding.FragmentMainDeportBinding;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -15,6 +31,8 @@ import com.medicapp.medicappprojectcomp.R;
  * create an instance of this fragment.
  */
 public class MainDeportFragment extends Fragment {
+
+    FragmentMainDeportBinding binding;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -24,6 +42,9 @@ public class MainDeportFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    RecyclerView recyclerView;
+    SportAdapter sportAdapter;
 
     public MainDeportFragment() {
         // Required empty public constructor
@@ -59,7 +80,62 @@ public class MainDeportFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        binding = FragmentMainDeportBinding.inflate(inflater);
+        iniElement();
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_main_deport, container, false);
+        return binding.getRoot();
+    }
+
+    View.OnClickListener buttonAddG=new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            println("test");
+        }
+    };
+
+    private  void iniElement(){
+
+
+        binding.recycler.setLayoutManager(new LinearLayoutManager(getContext()));
+        List<Sport> sportList = new ArrayList<>();
+
+        sportList = readData();
+
+        sportAdapter = new SportAdapter(sportList, getContext());
+
+        binding.recycler.setAdapter(sportAdapter);
+
+
+    }
+
+    private List<Sport> readData(){
+        List<Sport> sportList = new ArrayList<>();
+        String jsonFileContent = null;
+        try {
+            jsonFileContent = ReadFiles.readJson(getContext(), "sports.json");
+
+            JSONObject myJsonBase = new JSONObject(jsonFileContent);
+            JSONArray myJsonData = myJsonBase.getJSONArray("Countries");
+
+
+            for(int i =0;i<myJsonData.length();i++){
+
+                String name = myJsonData.getJSONObject(i).get("Name").toString();
+                String nativeName = myJsonData.getJSONObject(i).get("NativeName").toString();
+                String sport = myJsonData.getJSONObject(i).get("Sport").toString();
+                String sportPng = myJsonData.getJSONObject(i).get("SportPng").toString();
+
+                sportList.add(new Sport( name, nativeName, sport,  sportPng));
+
+            }
+
+            return sportList;
+
+        }
+        catch (IOException | org.json.JSONException e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 }

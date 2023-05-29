@@ -1,0 +1,35 @@
+{
+  "TotalCount": 250,
+  "Countries": [
+    {
+      "Name": "Saltar la cuerda",
+      "NativeName": "Nivel 1",
+      "Sport": "https://w7.pngwing.com/pngs/995/894/png-transparent-running-cartoon-hand-painted-cartoon-rope-skipping-watercolor-painting-physical-fitness-sport.png",
+      "SportPng": "https://w7.pngwing.com/pngs/995/894/png-transparent-running-cartoon-hand-painted-cartoon-rope-skipping-watercolor-painting-physical-fitness-sport.png"
+    },
+    {
+      "Name": "Sentadilla",
+      "NativeName": "Nivel 2",
+      "Sport": "https://www.diariodecultura.com.ar/wp-content/uploads/2020/03/asf-1.png",
+      "SportPng": "https://www.diariodecultura.com.ar/wp-content/uploads/2020/03/asf-1.png"
+    },
+    {
+      "Name": "Saltar la cuerda con peso",
+      "NativeName": "Nivel 1",
+      "Sport": "https://w7.pngwing.com/pngs/995/894/png-transparent-running-cartoon-hand-painted-cartoon-rope-skipping-watercolor-painting-physical-fitness-sport.png",
+      "SportPng": "https://w7.pngwing.com/pngs/995/894/png-transparent-running-cartoon-hand-painted-cartoon-rope-skipping-watercolor-painting-physical-fitness-sport.png"
+    },
+    {
+      "Name": "Saltar la cuerda Intermedio",
+      "NativeName": "Nivel 2",
+      "Sport": "https://w7.pngwing.com/pngs/995/894/png-transparent-running-cartoon-hand-painted-cartoon-rope-skipping-watercolor-painting-physical-fitness-sport.png",
+      "SportPng": "https://w7.pngwing.com/pngs/995/894/png-transparent-running-cartoon-hand-painted-cartoon-rope-skipping-watercolor-painting-physical-fitness-sport.png"
+    },
+    {
+      "Name": "Sentadilla con Peso Doble",
+      "NativeName": "Experto",
+      "Sport": "https://www.diariodecultura.com.ar/wp-content/uploads/2020/03/asf-1.png",
+      "SportPng": "https://www.diariodecultura.com.ar/wp-content/uploads/2020/03/asf-1.png"
+    }
+  ]
+}

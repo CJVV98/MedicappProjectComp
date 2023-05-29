@@ -155,14 +155,14 @@ public class ProfileFragment extends Fragment {
                 patient.setName((String) element.child("name").getValue());
                 patient.setEmail((String) element.child("email").getValue());
                 try {
-                    patient.setBirthday(new SimpleDateFormat("yyyy-mm-dd").parse((String) element.child("birthday").getValue()));
-                    patient.setDateDiagnostic(new SimpleDateFormat("yyyy-mm-dd").parse((String) element.child("dateDiagnostic").getValue()));
+                    patient.setBirthday(new SimpleDateFormat("yyyy-mm-dd").parse(element.child("birthday").getValue() != null ? (String) element.child("birthday").getValue() : "1900-01-01"));
+                    patient.setDateDiagnostic(new SimpleDateFormat("yyyy-mm-dd").parse(element.child("dateDiagnostic").getValue() != null ? (String) element.child("dateDiagnostic").getValue(): "1900-01-01"));
 
                 } catch (ParseException e) {
                     throw new RuntimeException(e);
                 }
-                patient.setHeight((Double) Double.parseDouble(element.child("height").getValue().toString()));
-                patient.setWeight((Long) Long.parseLong(element.child("weight").getValue().toString()));
+                patient.setHeight((Double) Double.parseDouble(element.child("height").getValue() != null ? element.child("height").getValue().toString() : "0.0"));
+                patient.setWeight((Long) Long.parseLong(element.child("weight").getValue() != null ? element.child("weight").getValue().toString() : "0"));
                 loadView(patient);
                 getImageProfile();
             }

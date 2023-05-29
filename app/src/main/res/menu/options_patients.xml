@@ -24,6 +24,11 @@
             app:iconTint="@color/blue_500"
             android:title="@string/item_food" />
         <item
+            android:id="@+id/menu_sport"
+            android:icon="@drawable/ic_sport"
+            app:iconTint="@color/blue_500"
+            android:title="@string/item_sport" />
+        <item
             android:id="@+id/menu_chat"
             android:icon="@drawable/ic_item_chat"
             app:iconTint="@color/blue_500"
