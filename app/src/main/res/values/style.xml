@@ -12,7 +12,11 @@
     </style>
     <style name="counterText">
         <item name="android:textColor">#aa5353cc</item>
+        <item name="android:backgroundTint">@color/white</item>
+        <item name="android:background">@color/white</item>
+        <item name="boxBackgroundColor">@color/white</item>
     </style>
+
 
     <style name="counterOverride">
         <item name="android:textColor">#ff0000</item>

@@ -33,6 +33,8 @@ public class PermissionService {
 
     static public final int PERMISSIONS_PHOTO = 1004;
     static public final int PERMISSIONS_VIDEO= 1005;
+    static public final int PERMISSIONS_REQUEST_GALLERY = 1002;
+
 
     private boolean mCameraPermissionGranted;
     private boolean mReadExternalStoragePermissionGranted;
@@ -105,8 +107,14 @@ public class PermissionService {
         } else {
             ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.READ_MEDIA_VIDEO}, PERMISSIONS_VIDEO);
         }
+    }
 
-
+    public void getGalleryPermission(Activity activity) {
+        if(checkPermission(Manifest.permission.READ_EXTERNAL_STORAGE)){
+            mReadExternalStoragePermissionGranted = true;
+        } else {
+            ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, PERMISSIONS_REQUEST_GALLERY);
+        }
     }
 }
 

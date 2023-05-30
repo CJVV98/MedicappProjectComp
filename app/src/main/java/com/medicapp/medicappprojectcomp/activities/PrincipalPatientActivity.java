@@ -1,6 +1,7 @@
 package com.medicapp.medicappprojectcomp.activities;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -67,13 +68,13 @@ public class PrincipalPatientActivity extends BaseActivity{
             case R.id.navigation_chat:
             case R.id.menu_chat:
                 binding.navBar.setVisibility(View.INVISIBLE);
-                getSupportActionBar().hide();
+                getSupportActionBar().show();
                 fragment = new ChatFragment();
                 fragmentTransaction = true;
                 break;
             case R.id.navigation_point:
             case R.id.menu_point:
-                binding.navBar.setVisibility(View.VISIBLE);
+                binding.navBar.setVisibility(View.INVISIBLE);
                 getSupportActionBar().show();
                 fragment = new MapFragment();
                 fragmentTransaction = true;
