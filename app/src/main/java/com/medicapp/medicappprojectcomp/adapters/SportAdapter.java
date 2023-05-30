@@ -49,10 +49,15 @@ public class SportAdapter extends RecyclerView.Adapter<SportAdapter.ViewHolder>{
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int pos) {
         String url = sportList.get(pos).getSportPng();
-        String nameCountry = sportList.get(pos).getName().toString();
-        String capital = sportList.get(pos).getNativeName().toString();
-        holder.txtCountry.setText(nameCountry);
-        holder.txtCapital.setText(capital);
+        String txt_name_sport = sportList.get(pos).getName().toString();
+        String txt_Level = sportList.get(pos).getLevel().toString();
+        String txt_routine = sportList.get(pos).getRoutine().toString();
+        String txt_routine_days = sportList.get(pos).getDays().toString();
+
+        holder.txt_name_sport.setText(txt_name_sport);
+        holder.txt_Level.setText(txt_Level);
+        holder.txt_routine.setText(txt_routine);
+        holder.txt_routine_days.setText(txt_routine_days);
 
         Glide.with(context)
                 .load(url)
@@ -60,8 +65,6 @@ public class SportAdapter extends RecyclerView.Adapter<SportAdapter.ViewHolder>{
                 .into(holder.imageSport);
 
     }
-
-
     @Override
     public int getItemCount() {
         return sportList.size();
@@ -70,9 +73,11 @@ public class SportAdapter extends RecyclerView.Adapter<SportAdapter.ViewHolder>{
     public static class ViewHolder extends RecyclerView.ViewHolder{
 
         private ImageView imageSport  ;
-        private TextView txtCountry;
-        private TextView txtCapital;
-        private TextView txtMoney;
+        private TextView txt_name_sport;
+        private TextView txt_Level;
+        private TextView txt_routine;
+        private TextView txt_routine_days;
+
 
         private FloatingActionButton btnCall;
 
@@ -80,10 +85,11 @@ public class SportAdapter extends RecyclerView.Adapter<SportAdapter.ViewHolder>{
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             imageSport = itemView.findViewById(R.id.image_sport);
-            txtCountry = itemView.findViewById(R.id.txt_country);
-            txtCapital = itemView.findViewById(R.id.txt_capital);
-            txtMoney = itemView.findViewById(R.id.txt_money);
-            btnCall =  itemView.findViewById(R.id.floatingActionButton);
+            txt_name_sport = itemView.findViewById(R.id.txt_name_sport);
+            txt_Level = itemView.findViewById(R.id.txt_Level);
+            txt_routine = itemView.findViewById(R.id.txt_routine);
+            txt_routine_days = itemView.findViewById(R.id.txt_routine_days);
+
 
         }
     }

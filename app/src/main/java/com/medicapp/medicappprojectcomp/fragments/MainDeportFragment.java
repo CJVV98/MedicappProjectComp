@@ -115,20 +115,21 @@ public class MainDeportFragment extends Fragment {
             jsonFileContent = ReadFiles.readJson(getContext(), "sports.json");
 
             JSONObject myJsonBase = new JSONObject(jsonFileContent);
-            JSONArray myJsonData = myJsonBase.getJSONArray("Countries");
+            JSONArray myJsonData = myJsonBase.getJSONArray("Sports");
 
 
             for(int i =0;i<myJsonData.length();i++){
 
                 String name = myJsonData.getJSONObject(i).get("Name").toString();
-                String nativeName = myJsonData.getJSONObject(i).get("NativeName").toString();
+                String level = myJsonData.getJSONObject(i).get("Level").toString();
+                String routine = myJsonData.getJSONObject(i).get("Routine").toString();
+                String days = myJsonData.getJSONObject(i).get("Days").toString();
                 String sport = myJsonData.getJSONObject(i).get("Sport").toString();
                 String sportPng = myJsonData.getJSONObject(i).get("SportPng").toString();
 
-                sportList.add(new Sport( name, nativeName, sport,  sportPng));
+                sportList.add(new Sport( name, level, routine, days, sport,  sportPng));
 
             }
-
             return sportList;
 
         }

@@ -1,17 +1,29 @@
 package com.medicapp.medicappprojectcomp.adapters;
 
+import com.airbnb.lottie.L;
+
 public class Sport {
 
     private String Name;
-    private String NativeName;
+    private String Level;
+
+    private String Routine;
+
+    private String Days;
     private String Sport;
     private String SportPng;
 
-    public Sport(String name, String nativeName, String sport, String sportPng) {
+    public Sport(String name, String level, String routine, String days, String sport, String sportPng) {
         this.Name = name;
-        this.NativeName = nativeName;
+        this.Level = level;
+        this.Routine = routine;
+        this.Days = days;
         this.Sport = sport;
         this.SportPng = sportPng;
+    }
+
+    public String getRoutine() {
+        return Routine;
     }
 
     public void setName(String name) {
@@ -19,7 +31,7 @@ public class Sport {
     }
 
     public void setNativeName(String nativeName) {
-        NativeName = nativeName;
+        Level = nativeName;
     }
 
 
@@ -35,8 +47,24 @@ public class Sport {
         return Name;
     }
 
-    public String getNativeName() {
-        return NativeName;
+    public String getLevel() {
+        return Level;
+    }
+
+    public void setLevel(String level) {
+        Level = level;
+    }
+
+    public void setRoutine(String routine) {
+        Routine = routine;
+    }
+
+    public void setDays(String days) {
+        Days = days;
+    }
+
+    public String getDays() {
+        return Days;
     }
 
     public String getSport() {
@@ -51,7 +79,7 @@ public class Sport {
     public String toString() {
         return "Sport{" +
                 "Name='" + Name + '\'' +
-                ", NativeName='" + NativeName + '\'' +
+                ", NativeName='" + Level + '\'' +
                 ", Sport='" + Sport + '\'' +
                 ", SportPng='" + SportPng + '\'' +
                 '}';
