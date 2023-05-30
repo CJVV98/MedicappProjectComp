@@ -87,7 +87,8 @@ public class RegistryGlucoseFragment extends BaseFragment {
     @RequiresApi(api = Build.VERSION_CODES.O)
     private Glucose getDataGlucose() {
         Glucose glucose=new Glucose();
-        glucose.setQuantity(Double.parseDouble(binding.measureTextInput.getEditText().getText().toString()));
+        String number=binding.measureTextInput.getEditText().getText().toString();
+        glucose.setQuantity(Double.parseDouble(number.contains(".")?number:number+".01"));
         glucose.setDate(binding.dateTextInput.getEditText().getText().toString());
         int hour = binding.timePickerGluc.getHour();
         int minute = binding.timePickerGluc.getMinute();
@@ -160,8 +161,12 @@ public class RegistryGlucoseFragment extends BaseFragment {
         listGlucose.stream().forEach(i->{
             LocalDate date = LocalDate.parse(i.getDate(),formatter);
             if(date.isAfter(now)){
-                dataReport.put(date.getDayOfMonth(),(int) Math.round(i.getQuantity()));
-            }
+                if(dataReport.get(date.getDayOfMonth())!=null){
+                    dataReport.put(date.getDayOfMonth(),(int) (dataReport.get(date.getDayOfMonth())+Math.round(i.getQuantity())));
+                }else{
+                    dataReport.put(date.getDayOfMonth(),(int) Math.round(i.getQuantity()));
+                }
+          }
         });
          dataReport.forEach((k,v)->{
              entries.add(new Entry(k, v));

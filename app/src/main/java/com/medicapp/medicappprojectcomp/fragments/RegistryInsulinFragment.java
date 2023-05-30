@@ -85,7 +85,8 @@ public class RegistryInsulinFragment extends BaseFragment {
     @RequiresApi(api = Build.VERSION_CODES.O)
     private Insulin getDataInsulin() {
         Insulin insulin=new Insulin();
-        insulin.setQuantity(Double.parseDouble(binding.measureTextInput.getEditText().getText().toString()));
+        String number=binding.measureTextInput.getEditText().getText().toString();
+        insulin.setQuantity(Double.parseDouble(number.contains(".")?number:number+".01"));
         insulin.setDate(binding.dateTextInput.getEditText().getText().toString());
         int hour = binding.timePickerInsul.getHour();
         int minute = binding.timePickerInsul.getMinute();
