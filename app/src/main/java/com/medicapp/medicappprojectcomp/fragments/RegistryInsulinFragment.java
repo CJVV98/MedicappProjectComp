@@ -72,6 +72,7 @@ public class RegistryInsulinFragment extends BaseFragment {
                     @Override
                     public void onSuccess(Void aVoid) {
                         alerts.indefiniteSnackbar(binding.getRoot(), getResources().getString(R.string.updateSuccesfull));
+                        clearControls();
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -80,6 +81,12 @@ public class RegistryInsulinFragment extends BaseFragment {
                         alerts.indefiniteSnackbar(binding.getRoot(), getResources().getString(R.string.updateError));
                     }
                 });
+    }
+
+    private void clearControls() {
+        binding.measureTextInput.getEditText().setText("");
+        binding.dateTextInput.getEditText().setText("");
+        binding.comment.getEditText().setText("");
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)

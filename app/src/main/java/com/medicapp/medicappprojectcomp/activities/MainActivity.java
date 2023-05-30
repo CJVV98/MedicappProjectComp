@@ -1,6 +1,9 @@
 package com.medicapp.medicappprojectcomp.activities;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
 
@@ -62,6 +65,20 @@ public class MainActivity extends BaseActivity {
         if (sslContext != null) {
             HttpsURLConnection.setDefaultSSLSocketFactory(sslContext.getSocketFactory());
             HttpsURLConnection.setDefaultHostnameVerifier((hostname, session) -> true);
+        }
+
+        validNotifications();
+    }
+
+    private void validNotifications() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence nombreCanal = "Medicapp";
+            String descripcionCanal = "Notificaciones";
+            int importancia = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel canal = new NotificationChannel("Medicapp", nombreCanal, importancia);
+            canal.setDescription(descripcionCanal);
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(canal);
         }
     }
 }

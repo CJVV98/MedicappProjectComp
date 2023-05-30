@@ -1,65 +1,168 @@
 package com.medicapp.medicappprojectcomp.fragments;
 
+import android.app.DatePickerDialog;
+import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.RadioGroup;
 
-import androidx.fragment.app.Fragment;
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 
+import com.github.mikephil.charting.charts.LineChart;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.medicapp.medicappprojectcomp.R;
+import com.medicapp.medicappprojectcomp.activities.LoginActivity;
+import com.medicapp.medicappprojectcomp.databinding.FragmentReminderBinding;
+import com.medicapp.medicappprojectcomp.models.Glucose;
+import com.medicapp.medicappprojectcomp.models.Reminder;
+import com.medicapp.medicappprojectcomp.servicies.AlertsHelper;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link ReminderFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class ReminderFragment extends Fragment {
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+public class ReminderFragment extends BaseFragment {
 
-    public ReminderFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment ReminderFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static ReminderFragment newInstance(String param1, String param2) {
-        ReminderFragment fragment = new ReminderFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
+    FragmentReminderBinding binding;
+    List<Glucose> listGlucose;
+    LineChart lineChart;
+    Map<String,Boolean> mapDays;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_reminder, container, false);
+        binding = FragmentReminderBinding.inflate(inflater);
+        alerts=new AlertsHelper(getContext());
+        mapDays=new HashMap<>();
+        addCalendatInputText();
+        binding.buttonAddReminder.setOnClickListener(v->addReminder());
+        return binding.getRoot();
     }
+
+    private void loadCheckBox() {
+        mapDays.put("Lunes",binding.chackMonday.isChecked());
+        mapDays.put("Martes",binding.chackTuesday.isChecked());
+        mapDays.put("Miercoles",binding.chackWenesday.isChecked());
+        mapDays.put("Jueves",binding.chackThursday.isChecked());
+        mapDays.put("Viernes",binding.chackFriday.isChecked());
+        mapDays.put("Sabado",binding.chackSaturday.isChecked());
+        mapDays.put("Domingo",binding.chackSunday.isChecked());
+    }
+
+    private void addReminder() {
+        Reminder reminder=loadReminder();
+        DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("users");;
+        String key = userRef.child("reminder").push().getKey();
+        userRef.child(user.getUid()).child("reminder").child(key).setValue(reminder)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        alerts.indefiniteSnackbar(binding.getRoot(), getResources().getString(R.string.updateSuccesfull));
+                        clearControls();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        alerts.indefiniteSnackbar(binding.getRoot(), getResources().getString(R.string.updateError));
+                    }
+                });
+    }
+
+    private void clearControls() {
+        binding.textTitle.setText("");
+        binding.dateStartTextInput.getEditText().setText("");
+        binding.dateEndTextInput.getEditText().setText("");
+        binding.chackMonday.setChecked(false);
+        binding.chackTuesday.setChecked(false);
+        binding.chackWenesday.setChecked(false);
+        binding.chackThursday.setChecked(false);
+        binding.chackFriday.setChecked(false);
+        binding.chackSaturday.setChecked(false);
+        binding.chackSunday.setChecked(false);
+    }
+
+
+    private Reminder loadReminder() {
+        Reminder reminder=new Reminder();
+        List<String> days = new ArrayList<>();
+        reminder.setTitle(binding.textTitle.getText().toString());
+        reminder.setDateStart(binding.dateStartTextInput.getEditText().getText().toString());
+        reminder.setDateEnd(binding.dateEndTextInput.getEditText().getText().toString());
+        loadCheckBox();
+        mapDays.forEach((k,v)->{
+            if(v){
+                days.add(k);
+            }
+        });
+        reminder.setDays(days);
+        int hour = binding.datePicker.getHour();
+        int minute = binding.datePicker.getMinute();
+        String time = String.format(Locale.getDefault(), "%02d:%02d", hour, minute);
+        reminder.setHour(time);
+        return reminder;
+    }
+
+    private void addCalendatInputText() {
+        Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH);
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+
+        DatePickerDialog datePickerDialogDateStart = new DatePickerDialog(getContext(),
+                R.style.datePickerDialog,(view, year1, monthOfYear, dayOfMonth) -> {
+            String monthZero = String.format("%02d", (monthOfYear + 1));
+            String dayZero = String.format("%02d", dayOfMonth);
+            String selectedDate =  year1+"-"+ monthZero + "-" +dayZero;
+            binding.dateStartEditText.setText(selectedDate);
+        }, year, month, day);
+
+        binding.dateStartEditText.setOnClickListener(v -> datePickerDialogDateStart.show());
+        binding.dateStartEditText.setInputType(InputType.TYPE_NULL);
+
+        DatePickerDialog datePickerDialogDateEnd = new DatePickerDialog(getContext(),
+                R.style.datePickerDialog,(view, year1, monthOfYear, dayOfMonth) -> {
+            String monthZero = String.format("%02d", (monthOfYear + 1));
+            String dayZero = String.format("%02d", dayOfMonth);
+            String selectedDate =  year1+"-"+ monthZero + "-" +dayZero;
+            binding.timeEditText.setText(selectedDate);
+        }, year, month, day);
+
+        binding.timeEditText.setOnClickListener(v -> datePickerDialogDateEnd.show());
+        binding.timeEditText.setInputType(InputType.TYPE_NULL);
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
+        if(firebaseAuth.getCurrentUser() == null){
+            exit();
+        } else {
+            user = firebaseAuth.getCurrentUser();
+        }
+    }
+
+    public void exit(){
+        firebaseAuth.signOut();
+        Intent intent = new Intent(getContext(), LoginActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+    }
+
 }

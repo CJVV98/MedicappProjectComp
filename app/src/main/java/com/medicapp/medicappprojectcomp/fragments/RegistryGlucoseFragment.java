@@ -74,6 +74,7 @@ public class RegistryGlucoseFragment extends BaseFragment {
                     @Override
                     public void onSuccess(Void aVoid) {
                         alerts.indefiniteSnackbar(binding.getRoot(), getResources().getString(R.string.updateSuccesfull));
+                        clearControls();
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -82,6 +83,11 @@ public class RegistryGlucoseFragment extends BaseFragment {
                         alerts.indefiniteSnackbar(binding.getRoot(), getResources().getString(R.string.updateError));
                     }
                 });
+    }
+
+    private void clearControls() {
+        binding.measureTextInput.getEditText().setText("");
+        binding.dateTextInput.getEditText().setText("");
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)

@@ -1,7 +1,10 @@
 package com.medicapp.medicappprojectcomp.activities;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,6 +17,11 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.medicapp.medicappprojectcomp.R;
 import com.medicapp.medicappprojectcomp.databinding.ActivityPrincipalPatientBinding;
 import com.medicapp.medicappprojectcomp.fragments.ChatFragment;
@@ -23,8 +31,14 @@ import com.medicapp.medicappprojectcomp.fragments.MapFragment;
 import com.medicapp.medicappprojectcomp.fragments.MedicalDiagnosticFragment;
 import com.medicapp.medicappprojectcomp.fragments.NewsFragment;
 import com.medicapp.medicappprojectcomp.fragments.ProfileFragment;
+import com.medicapp.medicappprojectcomp.models.Reminder;
 import com.medicapp.medicappprojectcomp.servicies.LocationService;
 import com.medicapp.medicappprojectcomp.servicies.PermissionService;
+import com.medicapp.medicappprojectcomp.utils.AlarmJob;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -40,6 +54,10 @@ public class PrincipalPatientActivity extends BaseActivity{
     FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
     FirebaseUser user;
 
+    List<Reminder> reminders;
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
+    private static final int REQUEST_CODE = 1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,6 +68,7 @@ public class PrincipalPatientActivity extends BaseActivity{
         binding.navBar.bringToFront();
         binding.navMenu.setNavigationItemSelectedListener(onNavigationItemSelected);
         binding.navMenu.bringToFront();
+
     }
 
 
@@ -125,6 +144,7 @@ public class PrincipalPatientActivity extends BaseActivity{
             exit();
         } else {
             user = firebaseAuth.getCurrentUser();
+            getProfile();
         }
     }
 
@@ -202,4 +222,83 @@ public class PrincipalPatientActivity extends BaseActivity{
         startActivity(intent);
     }
 
+    private void getProfile() {
+        DatabaseReference databaseRef = database.getReference("users/"+user.getUid()+"/reminder");
+        databaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                reminders=new ArrayList<>();
+                snapshot.getChildren().forEach(data->{
+                    Reminder reminder=new Reminder();
+                    reminder.setTitle((String) data.child("title").getValue());
+                    reminder.setDateStart((String) data.child("dateStart").getValue());
+                    reminder.setDateEnd((String) data.child("dateEnd").getValue());
+                    reminder.setHour((String) data.child("hour").getValue());
+                    reminder.setDays((ArrayList) data.child("days").getValue());
+                    reminders.add(reminder);
+                    addAlarm();
+                });
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                System.out.println(error);
+            }
+        });
+    }
+
+    private void addAlarm() {
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+
+        // Crea un intent para iniciar el BroadcastReceiver
+        Intent intent = new Intent(this, AlarmJob.class);
+        PendingIntent pendingIntent;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            pendingIntent = PendingIntent.getBroadcast(
+                    getApplicationContext(),
+                    REQUEST_CODE,
+                    intent,
+                    PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT
+            );
+        } else {
+            pendingIntent = PendingIntent.getBroadcast(
+                    getApplicationContext(),
+                    REQUEST_CODE,
+                    intent,
+                    PendingIntent.FLAG_UPDATE_CURRENT
+            );
+        }
+        Calendar startTime = Calendar.getInstance();
+        startTime.set(Calendar.DAY_OF_MONTH, 1);
+        startTime.set(Calendar.MONTH, Calendar.MAY);
+        startTime.set(Calendar.YEAR, 2023);
+        startTime.set(Calendar.HOUR_OF_DAY, 0);
+        startTime.set(Calendar.MINUTE, 0);
+        startTime.set(Calendar.SECOND, 0);
+
+        // Configura la repetición de la alarma cada 15 minutos
+        long intervalMillis = 5 * 60 * 1000; // 15 minutos en milisegundos
+
+        // Configura la alarma para que se repita hasta el 1 de agosto
+        Calendar endTime = Calendar.getInstance();
+        endTime.set(Calendar.DAY_OF_MONTH, 1);
+        endTime.set(Calendar.MONTH, Calendar.AUGUST);
+        endTime.set(Calendar.YEAR, 2023);
+        endTime.set(Calendar.HOUR_OF_DAY, 0);
+        endTime.set(Calendar.MINUTE, 0);
+        endTime.set(Calendar.SECOND, 0);
+
+        // Programa la alarma repetitiva
+        if (alarmManager != null) {
+            alarmManager.setRepeating(
+                    AlarmManager.RTC_WAKEUP,
+                    startTime.getTimeInMillis(),
+                    intervalMillis,
+                    pendingIntent
+            );
+
+        }
+    }
 }

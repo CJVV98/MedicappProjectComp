@@ -13,7 +13,7 @@ import lombok.Setter;
 @NoArgsConstructor(force = true)
 public class Reminder {
     String title;
-    String dateStar;
+    String dateStart;
     String dateEnd;
     List<String> days;
     String hour;

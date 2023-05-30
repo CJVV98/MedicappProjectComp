@@ -35,6 +35,8 @@ public class PermissionService {
     static public final int PERMISSIONS_VIDEO= 1005;
     static public final int PERMISSIONS_REQUEST_GALLERY = 1002;
 
+    static public final int PERMISSIONS_REQUEST_ALARM = 1010;
+
 
     private boolean mCameraPermissionGranted;
     private boolean mReadExternalStoragePermissionGranted;
@@ -42,6 +44,8 @@ public class PermissionService {
     private boolean mPhotoPermission;
 
     private boolean mVideoPermission;
+
+    private boolean mAlarm;
 
     private Context context;
 
@@ -51,6 +55,7 @@ public class PermissionService {
         mCameraPermissionGranted = checkPermission(Manifest.permission.CAMERA);
         mReadExternalStoragePermissionGranted = checkPermission(Manifest.permission.READ_EXTERNAL_STORAGE);
         mLocationPermissionGranted = checkPermission(Manifest.permission.ACCESS_FINE_LOCATION);
+        mAlarm =checkPermission(Manifest.permission.SCHEDULE_EXACT_ALARM);
     }
 
     public void getCameraPermission(Activity activity) {
@@ -114,6 +119,14 @@ public class PermissionService {
             mReadExternalStoragePermissionGranted = true;
         } else {
             ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, PERMISSIONS_REQUEST_GALLERY);
+        }
+    }
+
+    public void getAlarmPermission(Activity activity) {
+        if(checkPermission(Manifest.permission.SCHEDULE_EXACT_ALARM)){
+            mAlarm = true;
+        } else {
+            ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.SCHEDULE_EXACT_ALARM}, PERMISSIONS_REQUEST_GALLERY);
         }
     }
 }
