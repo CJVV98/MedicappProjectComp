@@ -18,49 +18,44 @@
             android:layout_width="400dp"
             android:layout_height="306dp"></ImageView>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"></LinearLayout>
-
         <TextView
-            android:id="@+id/txt_country"
+            android:id="@+id/txt_name_sport"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Country"
+            android:text=""
             android:textColor="@color/white"
             android:textSize="25dp">
 
         </TextView>
 
         <TextView
-            android:id="@+id/txt_capital"
+            android:id="@+id/txt_Level"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Country"
+            android:text=""
             android:textColor="@color/white"
             android:textSize="25dp">
 
         </TextView>
 
         <TextView
-            android:id="@+id/txt_money"
+            android:id="@+id/txt_routine"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Country"
+            android:text=""
             android:textColor="@color/white"
             android:textSize="25dp">
 
         </TextView>
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/floatingActionButton"
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/txt_routine_days"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:clickable="true"
-            android:layout_gravity="bottom|right"
-            app:srcCompat="@android:drawable/stat_sys_phone_call_forward" />
+            android:text=""
+            android:textColor="@color/white"
+            android:textSize="25dp">
 
+        </TextView>
 
     </LinearLayout>
 </androidx.cardview.widget.CardView>
